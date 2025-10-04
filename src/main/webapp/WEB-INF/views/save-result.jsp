@@ -1,0 +1,17 @@
+ <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+ <html>
+ <head>
+    <meta charset="UTF-8">
+ </head>
+ <body>
+성공
+<ul>
+    <li>id=${member.id}</li>
+    <li>username=${member.userName}</li>
+    <li>age=${member.age}</li>
+ </ul>
+ <a href="/index.html">메인</a>
+ <br/>
+ <a href="/servlet-mvc/members">현재 목록 조회</a>
+ </body>
+ </html>
