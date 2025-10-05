@@ -18,7 +18,6 @@
     <!-- JSTL 문법 -->
 
     <c:choose>
-      <!-- 필요하면 JSTL 문법 찾아보면 됨 -->
       <c:when test="${empty members}">
         <p>아직 아무것도 없다 등록해라</p>
       </c:when>
