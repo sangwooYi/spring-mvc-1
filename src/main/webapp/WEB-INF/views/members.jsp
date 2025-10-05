@@ -16,13 +16,22 @@
     <tbody>
 
     <!-- JSTL 문법 -->
-    <c:forEach var="item" items="${members}">
-        <tr>
-            <td>${item.id}</td>
-            <td>${item.userName}</td>
-            <td>${item.age}</td>
-        </tr>
-    </c:forEach>
+
+    <c:choose>
+      <!-- 필요하면 JSTL 문법 찾아보면 됨 -->
+      <c:when test="${empty members}">
+        <p>아직 아무것도 없다 등록해라</p>
+      </c:when>
+      <c:otherwise>
+         <c:forEach var="item" items="${members}">
+             <tr>
+                 <td>${item.id}</td>
+                 <td>${item.userName}</td>
+                 <td>${item.age}</td>
+             </tr>
+         </c:forEach>
+      </c:otherwise>
+    </c:choose>
     </tbody>
  </table>
  </body>

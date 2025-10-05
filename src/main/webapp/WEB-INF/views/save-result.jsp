@@ -12,6 +12,8 @@
  </ul>
  <a href="/index.html">메인</a>
  <br/>
- <a href="/servlet-mvc/members">현재 목록 조회</a>
+ <a href="/front-controller/v2/members">현재 목록 조회</a>
+ <br/>
+ <a href="/front-controller/v2/members/new-form">추가등록</a>
  </body>
  </html>
