@@ -4,6 +4,7 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -20,7 +21,6 @@ public class MyView {
 
     // 공통 렌더링 함수
     public void render(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         RequestDispatcher dispatcher = request.getRequestDispatcher(this.viewPath);
         dispatcher.forward(request, response);
     }
@@ -30,7 +30,6 @@ public class MyView {
     // 오버로딩은 같은 메서드명으로 매개변수 다르게해서 여러개 선언하는것 (Over Loading)
     // 오버라이딩은 상속 과정에서 메서드를 재정의 하는것  (Overriding <- 뜻 자체가 덮어쓰다라는 뜻)
     public void render(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         // 참조 데이터 형이므로 이렇게 그냥 해도 됨
         this.setModelToRequestAttribute(model, request);
         RequestDispatcher dispatcher = request.getRequestDispatcher(this.viewPath);
