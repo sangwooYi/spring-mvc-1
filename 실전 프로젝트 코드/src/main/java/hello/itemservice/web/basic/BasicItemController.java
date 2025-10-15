@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -31,7 +32,6 @@ public class BasicItemController {
     @GetMapping("")
     public String items(Model model) {
         List<Item> items = itemRepository.findAll();
-        log.info("items size = {}", items.size());
         model.addAttribute("items", items);
 
         return "basic/items";
@@ -55,10 +55,14 @@ public class BasicItemController {
      *
      * 여기서도 @ModelAttribute 로 받을 수 있다.
      * 당연한건 여기서 매핑되서 준 item 파라미터에는 id 값은 null 상태! ( 당연한거 )
+     * @ModelAttribute("item") Item item 이렇게 @ModelAttribute에 () 로 이름을 정의하면
+     * model.addAttribute("item", item) 이부분을 생략해도 된다.
+     * ( @ModelAttribute("명칭") 이렇게 선언하면
+     * model.addAttribute("명칭", 객체) 이부분을 알아서 해준다 . )
      *
      * @return
      */
-    @PostMapping("/add")
+    //@PostMapping("/add")
     public String addForm(@ModelAttribute Item item,
                           Model model) {
 
@@ -69,6 +73,22 @@ public class BasicItemController {
 
         return "basic/item";
     }
+
+    /**
+     * 이렇게 HTML 폼으로 전달하는 경우에는 @ModelAttribute 이용해서 간단하게 코드 작성 가능
+     * @param item
+     * @param model
+     * @return
+     */
+    @PostMapping("/add")
+    public String addFormV2(@ModelAttribute("item") Item item,
+                          Model model) {
+
+        itemRepository.save(item);
+
+        return "basic/item";
+    }
+
 
     /**
      * 특정 상품 조회
@@ -88,30 +108,31 @@ public class BasicItemController {
     /**
      * 상품 수정 페이지
      * @param itemId
-     * @param model
      * @return
      */
     @GetMapping("/{itemId}/edit")
-    public String editForm(@PathVariable Long itemId, Model model) {
+    public ModelAndView editForm(@PathVariable Long itemId) {
 
         Item item = itemRepository.findById(itemId);
-        model.addAttribute("item", item);
 
-        return "basic/editForm";
+        // 논리적 View 경로를 통해 전체 Path 를 알아서 찾아줌
+        ModelAndView mv = new ModelAndView("basic/editForm");
+        mv.addObject("item", item);
+
+        return mv;
     }
 
     /**
      * 상품 수정
-     *
+     * 단순히 String 말고 이렇게 ModelAndView로 반환하는것도 가능 ( 이게 더 사실 자주 쓰던 방식 )
      * 
      * @param itemId
-     * @param model
+     * @param item
      * @return
      */
     @PostMapping("/{itemId}/edit")
-    public String editItem(@PathVariable Long itemId,
-                           @ModelAttribute Item item,
-                           Model model) {
+    public ModelAndView editItem(@PathVariable Long itemId,
+                                 @ModelAttribute Item item) {
     
         Item curItem = itemRepository.findById(itemId);
 
@@ -120,9 +141,10 @@ public class BasicItemController {
         curItem.setPrice(item.getPrice());
         curItem.setQuantity(item.getQuantity());
 
-        model.addAttribute("item", curItem);
+        ModelAndView mv = new ModelAndView("basic/item");
+        mv.addObject("item", curItem);
 
-        return "basic/item";
+        return mv;
     }
 
 
