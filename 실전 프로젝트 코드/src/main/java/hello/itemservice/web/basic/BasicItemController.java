@@ -134,15 +134,10 @@ public class BasicItemController {
     public ModelAndView editItem(@PathVariable Long itemId,
                                  @ModelAttribute Item item) {
     
-        Item curItem = itemRepository.findById(itemId);
+        itemRepository.update(itemId, item);
 
-        // 참조형 타입이므로 그냥 이렇게만해도 이 Item 값은 리스트안에서도 수정되어있다.
-        curItem.setItemName(item.getItemName());
-        curItem.setPrice(item.getPrice());
-        curItem.setQuantity(item.getQuantity());
-
-        ModelAndView mv = new ModelAndView("basic/item");
-        mv.addObject("item", curItem);
+        // redirect도 동일하게 이렇게 하면 됨!
+        ModelAndView mv = new ModelAndView("redirect:/basic/items/{itemId}");
 
         return mv;
     }
