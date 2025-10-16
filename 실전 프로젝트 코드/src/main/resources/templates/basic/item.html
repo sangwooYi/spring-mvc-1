@@ -14,6 +14,10 @@
     <div class="py-5 text-center">
         <h2>상품 상세</h2>
     </div>
+
+    <!-- 쿼리 파라미터는 param.status 이런식으로 바로 꺼내 쓸 수 있으며, th:속성="" 에서 스트링 하드코딩하려면 '' 로 입력해 줘야 함 -->
+    <h3 th:if="${param.status}" th:text="'저장 완료'"></h3>
+
     <div>
         <!-- 기본적으로 th:text, th:value, th:onclick 처럼, html 태그 속성에 연결시킬 때 그 속성 앞에 th: 붙여주면 됨 -->
         <label for="itemId">상품 ID</label>

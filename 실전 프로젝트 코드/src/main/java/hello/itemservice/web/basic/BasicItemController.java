@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -80,15 +81,27 @@ public class BasicItemController {
      * @param model
      * @return
      */
-    @PostMapping("/add")
-    public String addFormV2(@ModelAttribute("item") Item item,
-                          Model model) {
+    //@PostMapping("/add")
+    public String addFormV2(@ModelAttribute("item") Item item) {
 
         itemRepository.save(item);
 
-        return "basic/item";
+        // 아이템 상세조회 Get 요청으로 리다이렉트 ( redirect: 는 서버에서 자체적으로 다른경로로 재요청하는 것 )
+        return "redirect:/basic/items/" + item.getId();
     }
 
+    @PostMapping("/add")
+    public String addFormV3(@ModelAttribute("item") Item item,
+                            RedirectAttributes redirectAttributes) {
+        itemRepository.save(item);
+
+        redirectAttributes.addAttribute("itemId", item.getId());
+        redirectAttributes.addAttribute("status", true);
+
+        // thymeleaf 에서 url 링크 처럼 위에서 넣어준 attribute 들은 여기서 Path Variable로 설정한 값 외에는
+        // 알아서 쿼리 파라미터로 연결해준다 ( ?key1=value1&key2=value2 이런식 )
+        return "redirect:/basic/items/{itemId}";
+    }
 
     /**
      * 특정 상품 조회
